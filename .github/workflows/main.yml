@@ -1,8 +1,7 @@
 name: eksworkflow
 on: 
   push:
-    branches: 
-    - main
+    branches: [main]
 jobs:
   cicd_job:
     name: build and depoly to eks

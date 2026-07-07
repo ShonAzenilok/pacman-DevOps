@@ -1,5 +1,5 @@
 name: eksworkflow
-on: 
+on:
   push:
     branches: [master]
 jobs:

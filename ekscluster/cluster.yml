@@ -4,7 +4,6 @@ kind: ClusterConfig
 metadata:
   name: pacman-cluster
   region: us-east-1
-  version: "1.29"
 
 managedNodeGroups:
   - name: pacman-nodes

@@ -31,8 +31,8 @@ jobs:
 
       - name: Create cluster
         if: inputs.action == 'create'
-        run: eksctl create cluster -f pacman-DevOps/ekscluster/cluster.yml
+        run: eksctl create cluster -f ekscluster/cluster.yml
 
       - name: Delete cluster
         if: inputs.action == 'delete'
-        run: eksctl delete cluster -f pacman-DevOps/ekscluster/cluster.yml --wait
+        run: eksctl delete cluster -f ekscluster/cluster.yml --wait

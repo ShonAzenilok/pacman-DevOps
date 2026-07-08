@@ -60,7 +60,7 @@ jobs:
         run: aws eks update-kubeconfig --name pacman-cluster --region us-east-1
 
       - name: Ensure namespace exists
-        run: kubectl apply -f pacman-DevOps/k8s/namespace.yaml
+        run: kubectl apply -f k8s/namespace.yaml
 
       - name: Install helm
         uses: azure/setup-helm@v4
@@ -71,7 +71,7 @@ jobs:
           helm repo update
           helm upgrade --install pacman-mongo bitnami/mongodb \
             --namespace pacman \
-            -f pacman-DevOps/k8s/mongodb-values.yaml \
+            -f k8s/mongodb-values.yaml \
             --set auth.rootPassword="${{ secrets.MONGO_ROOT_PASSWORD }}" \
             --set auth.password="${{ secrets.MONGO_APP_PASSWORD }}" \
             --wait --timeout 5m
@@ -88,6 +88,6 @@ jobs:
         env:
           IMAGE: ${{ needs.build_and_push.outputs.image }}
         run: |
-          sed "s#IMAGE_PLACEHOLDER#$IMAGE#" pacman-DevOps/k8s/app-deployment.yaml | kubectl apply -f -
-          kubectl apply -f pacman-DevOps/k8s/app-service.yaml
+          sed "s#IMAGE_PLACEHOLDER#$IMAGE#" k8s/app-deployment.yaml | kubectl apply -f -
+          kubectl apply -f k8s/app-service.yaml
           kubectl rollout status deployment/pacman -n pacman --timeout=180s

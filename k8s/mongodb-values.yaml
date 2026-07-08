@@ -1,0 +1,26 @@
+# Values for: helm install pacman-mongo bitnami/mongodb -n pacman -f mongodb-values.yaml
+# Do not commit real passwords here — pass them with --set on the command line
+# or via a sealed-secret/external-secrets pipeline instead.
+
+architecture: replicaset
+replicaCount: 3
+
+auth:
+  enabled: true
+  rootPassword: ""    # set with --set auth.rootPassword=...
+  username: pacman
+  password: ""         # set with --set auth.password=...
+  database: pacman
+
+persistence:
+  enabled: true
+  storageClass: gp3
+  size: 8Gi
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: 500m
+    memory: 1Gi

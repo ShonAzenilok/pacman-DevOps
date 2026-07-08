@@ -1,1 +1,20 @@
-"" -
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: pacman-cluster
+  region: us-east-1
+  version: "1.29"
+
+managedNodeGroups:
+  - name: pacman-nodes
+    instanceType: t3.medium
+    desiredCapacity: 3
+    minSize: 2
+    maxSize: 5
+    volumeSize: 20
+    privateNetworking: true
+
+# gp3 is the default StorageClass on EKS 1.23+; if it's missing, install the
+# aws-ebs-csi-driver addon:
+#   eksctl create addon --cluster pacman-cluster --name aws-ebs-csi-driver

@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pacman
+  namespace: pacman
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: pacman
+  template:
+    metadata:
+      labels:
+        app: pacman
+    spec:
+      containers:
+        - name: pacman
+          # Substituted by the deploy job in .github/workflows/main.yml
+          # (sed replaces this token with <registry>/pacman:<git-sha>).
+          image: IMAGE_PLACEHOLDER
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MONGO_SERVICE_HOST
+              value: pacman-mongo-headless.pacman.svc.cluster.local
+            - name: MY_MONGO_PORT
+              value: "27017"
+            - name: MONGO_DATABASE
+              value: pacman
+            - name: MONGO_REPLICA_SET
+              value: rs0
+            - name: MONGO_AUTH_USER
+              valueFrom:
+                secretKeyRef:
+                  name: pacman-mongo-auth
+                  key: MONGO_AUTH_USER
+            - name: MONGO_AUTH_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: pacman-mongo-auth
+                  key: MONGO_AUTH_PWD
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
